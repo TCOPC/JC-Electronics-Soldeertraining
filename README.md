@@ -1,15 +1,17 @@
-
-```
-----------------------
-GPIO25/DAC1   - LRCK
-GPIO26/DAC2   - BCLK
-GPIO22        - DATA
-```
-
-I2C bus gebruikt de volgende pinnen:
+I2S gebruikt de volgende pinnen:
 ESP32 pin  -  I2C signal
 ```
 ----------------------
-GPIO14   - SCL
-GPIO13   - SDA
+GPIO25        - LRCK
+GPIO27        - BCLK
+GPIO26        - DATA
 ```
+
+I2C gebruikt de volgende pinnen:
+ESP32 pin  -  I2C signal
+```
+----------------------
+GPIO32   - SCL
+GPIO33   - SDA
+```
+AMP enable zit op GPIO18
