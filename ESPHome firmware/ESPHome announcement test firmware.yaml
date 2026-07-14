@@ -1,0 +1,77 @@
+esphome:
+  name: soldeertraining
+  friendly_name: Soldeertraining
+  on_boot:
+    priority: -100
+    then:
+      - audio_dac.mute_off:
+          id: dac_pcm5122
+      - delay: 200ms
+      - switch.turn_on: amp_enable
+ 
+esp32:
+  board: esp32dev
+  variant: esp32
+  framework:
+    type: esp-idf
+    version: recommended
+    advanced:
+      sram1_as_iram: true
+
+logger:
+  level: DEBUG  
+
+api:
+  encryption:
+    key: !secret api_key
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+
+
+i2c:
+  sda: GPIO33
+  scl: GPIO32
+  scan: true
+
+audio_dac:
+  - platform: pcm5122
+    id: dac_pcm5122
+    address: 0x4C
+
+i2s_audio:
+  id: i2s_bus
+  i2s_lrclk_pin: GPIO25
+  i2s_bclk_pin: GPIO27
+
+speaker:
+  - platform: i2s_audio
+    id: pcm_speaker
+    i2s_audio_id: i2s_bus
+    i2s_dout_pin: GPIO26
+    dac_type: external
+    sample_rate: 44100
+    bits_per_sample: 16bit
+
+switch:
+  - platform: gpio
+    pin: GPIO18
+    id: amp_enable
+    name: "Amplifier Enable"
+
+media_player:
+  - platform: speaker
+    name: "Announcement Speaker"
+    id: test_media_player
+    announcement_pipeline:
+      speaker: pcm_speaker
+      format: WAV
+      sample_rate: 16000
+      num_channels: 1
+    buffer_size: 32000
+    
